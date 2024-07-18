@@ -24,6 +24,7 @@ static MAGIC_BYTES: [(&[u8], ImageFormat); 7] = [
 /// Makes an educated guess about the image format based on the Magic Bytes at the beginning.
 /// TGA is not supported by this function.
 /// This is not to be trusted on the validity of the whole memory block
+/// This block is copied from `image` crate
 pub fn guess_format(buffer: &[u8]) -> Option<ImageFormat> {
     for &(signature, format) in &MAGIC_BYTES {
         if buffer.starts_with(signature) {

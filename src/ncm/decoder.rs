@@ -2,12 +2,13 @@ use std::fs::File;
 use std::io::{Read, Seek};
 use std::path::PathBuf;
 
-use crate::{meta_data, NcmMusic, NcmRc4};
-use crate::error::NcmDecodeError;
-use crate::crypt;
+use crate::{crypt, meta_data};
+use crate::NcmDecodeError;
 
+use crypt::NcmRc4;
 use super::audio::Audio;
 use super::model::NcmInfo;
+use super::NcmMusic;
 
 const HEADER_KEY: [u8; 16] = [ 0x68, 0x7A, 0x48, 0x52, 0x41, 0x6D, 0x73, 0x6F, 0x35, 0x6B, 0x49, 0x6E, 0x62, 0x61, 0x78, 0x57 ];
 
