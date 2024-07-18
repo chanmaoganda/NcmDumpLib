@@ -1,3 +1,4 @@
+mod image;
 mod metadata;
 mod mp3_metadata;
 mod flac_metadata;
