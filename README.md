@@ -12,3 +12,6 @@ basic usage:
     let ncm_dumper = NcmDumper::new(music_list, output_directory);
     ncm_dumper.dump_all()?;
 ```
+
+- ncm
+ncm dump principle is [layout.md](src/ncm/layout.md)
