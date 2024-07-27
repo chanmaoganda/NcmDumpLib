@@ -1,6 +1,4 @@
-use std::fs::File;
 use std::io::{Read, Seek};
-use std::path::Path;
 
 use crate::{crypt, meta_data};
 use crate::NcmDecodeError;
@@ -24,13 +22,12 @@ const INFO_KEY: [u8; 16] = [ 0x23, 0x31, 0x34, 0x6C, 0x6A, 0x6B, 0x5F, 0x21, 0x5
 /// let mut decoder = NcmDecoder::new(&file_path);
 /// let music: NcmMusic = decoder.decode()?;
 /// ```
-pub struct NcmDecoder {
-    reader: File,
+pub struct NcmDecoder<T: Read + Seek> {
+    reader: T,
 }
 
-impl NcmDecoder {
-    pub fn new(path: impl AsRef<Path>) -> Self {
-        let reader = File::open(path).unwrap();
+impl<T: Read + Seek> NcmDecoder<T> {
+    pub fn from_reader(reader: T) -> Self {
         NcmDecoder {
             reader,
         }
@@ -94,7 +91,7 @@ impl NcmDecoder {
 }
 
 /// private utils to decode
-impl NcmDecoder {
+impl<T: Read + Seek> NcmDecoder<T> {
     fn parse_length(&mut self) -> Result<u64, NcmDecodeError> {
         let mut byte_length = [0; 4];
 

@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write, path::PathBuf};
+use std::{fs::File, io::{Cursor, Write}, path::PathBuf};
 
 use crate::{NcmDecoder, NcmMusic};
 
@@ -30,7 +30,8 @@ impl NcmDumper {
     }
 
     fn dump(path_buf: &PathBuf, output_directory: &PathBuf) -> anyhow::Result<()> {
-        let mut decoder = NcmDecoder::new(path_buf);
+        let stream = std::fs::read(path_buf)?;
+        let mut decoder = NcmDecoder::from_reader(Cursor::new(stream));
         let NcmMusic { 
             mut metadata,
             music_type,
