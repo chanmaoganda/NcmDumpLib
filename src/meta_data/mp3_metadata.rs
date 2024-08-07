@@ -3,7 +3,7 @@ use id3::{frame, TagLike};
 use crate::{guess_pict_type, NcmInfo, MetaData};
 
 pub struct Mp3MetaData {
-    tag: id3::Tag,
+    pub tag: id3::Tag,
 }
 
 impl Mp3MetaData {

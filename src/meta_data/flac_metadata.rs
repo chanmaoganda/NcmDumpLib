@@ -1,7 +1,7 @@
 use crate::{guess_pict_type, MetaData, NcmInfo};
 
 pub struct FlacMetadata {
-    tag: metaflac::Tag,
+    pub tag: metaflac::Tag,
 }
 
 impl FlacMetadata {
