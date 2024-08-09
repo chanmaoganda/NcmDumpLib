@@ -1,9 +1,9 @@
-use std::path::PathBuf;
+use std::path::Path;
 
 use crate::{FlacMetadata, Mp3MetaData, NcmInfo};
 
 pub trait MetaData {
-    fn inject(&mut self, path_buf: &PathBuf);
+    fn inject(&mut self, path_buf: &Path);
 }
 
 pub fn ncm_metadata_builder(music_type: &str, ncm_info: NcmInfo, image: Vec<u8>) -> Box<dyn MetaData> {

@@ -25,7 +25,7 @@ impl FlacMetadata {
 }
 
 impl MetaData for FlacMetadata {
-    fn inject(&mut self, path_buf: &std::path::PathBuf) {
+    fn inject(&mut self, path_buf: &std::path::Path) {
         self.tag.write_to_path(path_buf).unwrap();
     }
 }

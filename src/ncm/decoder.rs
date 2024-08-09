@@ -12,6 +12,8 @@ const HEADER_KEY: [u8; 16] = [ 0x68, 0x7A, 0x48, 0x52, 0x41, 0x6D, 0x73, 0x6F, 0
 
 const INFO_KEY: [u8; 16] = [ 0x23, 0x31, 0x34, 0x6C, 0x6A, 0x6B, 0x5F, 0x21, 0x5C, 0x5D, 0x26, 0x30, 0x55, 0x3C, 0x27, 0x28 ];
 
+const SALT_VALUE: &str = "neteasecloudmusic";
+
 /// Handle the decoding process of a NCM file
 /// 
 /// # Example
@@ -128,14 +130,14 @@ impl<T: Read + Seek> NcmDecoder<T> {
 
     fn decrypt_rc4_key(&self, mut encrypted_key: Vec<u8>) -> Result<Vec<u8>, NcmDecodeError> {
         encrypted_key.iter_mut()
-            .for_each(|byte| *byte = *byte ^ 0x64);
+            .for_each(|byte| *byte ^= 0x64);
 
         let aes_decrypted_key = crypt::aes128_decrypt(encrypted_key, &HEADER_KEY)?;
 
         let salt = String::from_utf8(aes_decrypted_key[..17].to_vec())
             .map_err(|_| NcmDecodeError::StringConvertError)?;
             
-        if salt != String::from("neteasecloudmusic") {
+        if salt != SALT_VALUE {
             return Err(NcmDecodeError::SaltError)
         }
 
@@ -145,7 +147,7 @@ impl<T: Read + Seek> NcmDecoder<T> {
     fn get_json_info(&mut self, length: u64) -> Result<NcmInfo, NcmDecodeError> {
         let mut info_data = self.take_next_bytes(length)?;
 
-        info_data.iter_mut().for_each(|byte| *byte = *byte ^ 0x63);
+        info_data.iter_mut().for_each(|byte| *byte ^= 0x63);
         let base64_decoded_info = crypt::base64_decode(info_data[22..].to_vec())?;
         let aes_decoded_info = crypt::aes128_decrypt(base64_decoded_info, &INFO_KEY)?;
 
