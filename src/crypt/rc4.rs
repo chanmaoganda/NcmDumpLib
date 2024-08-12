@@ -16,7 +16,7 @@ impl NcmRc4 {
 
     pub fn decrypt(&self, buf: &mut [u8]) {
         buf.iter_mut().zip(self.rc4_iter.clone())
-            .for_each(|(byte, x)| *byte = *byte ^ x)
+            .for_each(|(byte, x)| *byte ^= x)
     }
 
     fn ksa(key: &[u8]) -> [u8; 256] {
