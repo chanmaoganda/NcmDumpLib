@@ -1,6 +1,6 @@
 use std::io::{Read, Seek};
 
-use crate::{crypt, meta_data};
+use crate::{crypt, LoftyMetaData};
 use crate::NcmDecodeError;
 
 use crypt::NcmRc4;
@@ -43,7 +43,7 @@ impl<T: Read + Seek> NcmDecoder<T> {
         let _ = self.take_next_bytes(9)?;
         let image = self.parse_image()?;
         let audio = self.parse_audio(ncm_rc4)?;
-        let metadata = meta_data::ncm_metadata_builder(&music_type, ncm_info, image);
+        let metadata = LoftyMetaData::from(&audio, &image);
 
         Ok(NcmMusic::new(metadata, music_type, audio))
     }
